@@ -27,7 +27,7 @@ const Utilisateur = mongoose.model(
 // "db" = nom du service MongoDB dans docker-compose.yml
 // En local remplace par "mongodb://localhost:27017/auth-service"
 mongoose
-  .connect("mongodb://db:27017/auth-service")
+  .connect("mongodb://mongodb:27017/auth-service")
   .then(() => console.log("Auth-Service DB Connected"))
   .catch((err) => console.error("DB Error:", err.message));
 

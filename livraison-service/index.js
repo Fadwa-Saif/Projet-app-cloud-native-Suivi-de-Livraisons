@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://db:27017/livraison-service';
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongodb:27017/livraison-service';
 const AMQP_URL = process.env.AMQP_URL || 'amqp://rabbitmq';
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 

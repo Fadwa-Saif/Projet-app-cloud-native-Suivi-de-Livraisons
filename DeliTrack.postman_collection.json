@@ -158,7 +158,7 @@
           { "key": "Content-Type", "value": "application/json" },
           { "key": "Authorization", "value": "Bearer {{token_client}}" }
         ],
-        "url": { "raw": "http://localhost:3002/clients/deliveries", "protocol": "http", "host": ["localhost"], "port": "3002", "path": ["clients", "deliveries"] },
+        "url": { "raw": "http://localhost:3006/clients/deliveries", "protocol": "http", "host": ["localhost"], "port": "3006", "path": ["clients", "deliveries"] },
         "body": { "mode": "raw", "raw": "{\n  \"pickup\": { \"address\": \"12 rue A\" },\n  \"dropoff\": { \"address\": \"45 avenue B\" }\n}" }
       }
     },
@@ -277,7 +277,7 @@
       "request": {
         "method": "GET",
         "header": [{ "key": "Authorization", "value": "Bearer {{token_client}}" }],
-        "url": { "raw": "http://localhost:3002/clients/deliveries/{{delivery_id}}", "protocol": "http", "host": ["localhost"], "port": "3002", "path": ["clients", "deliveries", "{{delivery_id}}"] }
+        "url": { "raw": "http://localhost:3006/clients/deliveries/{{delivery_id}}", "protocol": "http", "host": ["localhost"], "port": "3006", "path": ["clients", "deliveries", "{{delivery_id}}"] }
       }
     },
     {
@@ -297,7 +297,7 @@
       "request": {
         "method": "GET",
         "header": [{ "key": "Authorization", "value": "Bearer {{token_client}}" }],
-        "url": { "raw": "http://localhost:3002/clients/deliveries/moi", "protocol": "http", "host": ["localhost"], "port": "3002", "path": ["clients", "deliveries", "moi"] }
+        "url": { "raw": "http://localhost:3006/clients/deliveries/moi", "protocol": "http", "host": ["localhost"], "port": "3006", "path": ["clients", "deliveries", "moi"] }
       }
     }
   ],

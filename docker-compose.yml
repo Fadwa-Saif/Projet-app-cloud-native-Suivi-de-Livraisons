@@ -3,6 +3,7 @@ services:
   mongo:
     image: mongo:6.0
     container_name: dt_mongo
+    hostname: mongodb
     ports: ["27017:27017"]
     volumes:
       - mongo-data:/data/db
@@ -16,22 +17,22 @@ services:
     build: ./auth-service
     ports: ["4003:4002"]
     environment:
-      - MONGO_URL=mongodb://mongo:27017/auth-service
+      - MONGO_URL=mongodb://mongodb:27017/auth-service
       - JWT_SECRET=secret
     depends_on: [ mongo ]
 
   livraison-service:
     build: ./livraison-service
-    ports: ["3003:3003"]
+    ports: ["3005:3003"]
     environment:
-      - MONGO_URL=mongodb://mongo:27017/livraison-service
+      - MONGO_URL=mongodb://mongodb:27017/livraison-service
       - AMQP_URL=amqp://rabbitmq
       - JWT_SECRET=secret
     depends_on: [ mongo, rabbitmq ]
 
   client-service:
     build: ./client-service
-    ports: ["3002:3002"]
+    ports: ["3006:3002"]
     environment:
       - LIVRAISON_URL=http://livraison-service:3003
       - JWT_SECRET=secret
