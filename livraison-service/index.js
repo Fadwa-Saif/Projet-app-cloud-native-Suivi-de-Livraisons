@@ -10,6 +10,7 @@ app.use(express.json());
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://mongodb:27017/livraison-service';
 const AMQP_URL = process.env.AMQP_URL || 'amqp://rabbitmq';
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+const STATUS_QUEUE = 'delivery.status.changed';
 
 // --- Mongoose model
 const Delivery = mongoose.model('Delivery', new mongoose.Schema({
@@ -33,23 +34,54 @@ mongoose.connect(MONGO_URL)
 
 // --- RabbitMQ setup
 let amqpChannel;
-async function setupAmqp(){
-  try{
-    const conn = await amqplib.connect(AMQP_URL);
-    const ch = await conn.createChannel();
-    await ch.assertExchange('delivery.status', 'fanout', { durable: false });
-    amqpChannel = ch;
-    console.log('Connected to AMQP');
-  }catch(err){
-    console.error('AMQP error', err.message);
-  }
+let amqpConnection;
+let reconnecting = false;
+
+function connectAMQP(){
+  if (reconnecting) return;
+  reconnecting = true;
+
+  amqplib.connect('amqp://rabbitmq')
+    .then(async (conn) => {
+      amqpConnection = conn;
+      const ch = await conn.createChannel();
+      await ch.assertQueue(STATUS_QUEUE, { durable: false });
+      amqpChannel = ch;
+      reconnecting = false;
+      console.log('AMQP connecté');
+
+      conn.on('error', (err) => {
+        console.error('AMQP error:', err.message);
+      });
+
+      conn.on('close', () => {
+        amqpChannel = null;
+        amqpConnection = null;
+        if (!reconnecting) {
+          setTimeout(() => connectAMQP(), 3000);
+        }
+      });
+    })
+    .catch((err) => {
+      amqpChannel = null;
+      amqpConnection = null;
+      reconnecting = false;
+      console.error('AMQP connection failed:', err.message);
+      setTimeout(() => connectAMQP(), 3000);
+    });
 }
-setupAmqp();
 
 function publishStatusChange(payload){
-  if(!amqpChannel) return console.warn('AMQP channel not ready');
-  amqpChannel.publish('delivery.status', '', Buffer.from(JSON.stringify(payload)));
+  if (!amqpChannel) {
+    console.warn('AMQP channel indisponible, message non publie');
+    return;
+  }
+
+  amqpChannel.sendToQueue(STATUS_QUEUE, Buffer.from(JSON.stringify(payload)));
+  console.log('Message publié:', { livraisonId: payload.livraisonId, statut: payload.statut });
 }
+
+connectAMQP();
 
 // --- Auth middleware
 function verifyToken(req, res, next){
@@ -133,7 +165,7 @@ app.patch('/deliveries/:id/status', verifyToken, requireRole('livreur'), async (
   appendTrace(d, status, commentaire || `Statut mis à jour vers ${status}`);
   await d.save();
   // publish to rabbitmq
-  publishStatusChange({ deliveryId: d._id, status, clientId: d.clientId, assignedTo: d.assignedTo, at: new Date() });
+  publishStatusChange({ livraisonId: String(d._id), statut: status, clientId: d.clientId, assignedTo: d.assignedTo, at: new Date() });
   res.json(d);
 });
 

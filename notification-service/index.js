@@ -1,17 +1,16 @@
 const amqplib = require('amqplib');
 require('dotenv').config();
 
-const AMQP_URL = process.env.AMQP_URL || 'amqp://localhost';
+const AMQP_URL = process.env.AMQP_URL || 'amqp://rabbitmq';
+const STATUS_QUEUE = 'delivery.status.changed';
 
 async function start(retries = 0) {
   try {
     const conn = await amqplib.connect(AMQP_URL);
     const ch = await conn.createChannel();
-    await ch.assertExchange('delivery.status', 'fanout', { durable: false });
-    const q = await ch.assertQueue('', { exclusive: true });
-    await ch.bindQueue(q.queue, 'delivery.status', '');
+    await ch.assertQueue(STATUS_QUEUE, { durable: false });
     console.log('Notification consumer waiting...');
-    ch.consume(q.queue, msg => {
+    ch.consume(STATUS_QUEUE, msg => {
       if(!msg) return;
       try{
         const data = JSON.parse(msg.content.toString());

@@ -23,7 +23,7 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": { "raw": "http://localhost:4002/auth/register", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "register"] },
+        "url": { "raw": "http://localhost:4003/auth/register", "protocol": "http", "host": ["localhost"], "port": "4003", "path": ["auth", "register"] },
         "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"role\": \"client\",\n  \"mot_passe\": \"pass123\"\n}" }
       }
     },
@@ -45,7 +45,7 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": { "raw": "http://localhost:4002/auth/register", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "register"] },
+        "url": { "raw": "http://localhost:4003/auth/register", "protocol": "http", "host": ["localhost"], "port": "4003", "path": ["auth", "register"] },
         "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Bob\",\n  \"email\": \"bob@example.com\",\n  \"role\": \"gestionnaire\",\n  \"mot_passe\": \"pass123\"\n}" }
       }
     },
@@ -67,7 +67,7 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": { "raw": "http://localhost:4002/auth/register", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "register"] },
+        "url": { "raw": "http://localhost:4003/auth/register", "protocol": "http", "host": ["localhost"], "port": "4003", "path": ["auth", "register"] },
         "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Charlie\",\n  \"email\": \"charlie@example.com\",\n  \"role\": \"livreur\",\n  \"mot_passe\": \"pass123\"\n}" }
       }
     },
@@ -89,7 +89,7 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": { "raw": "http://localhost:4002/auth/login", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "login"] },
+        "url": { "raw": "http://localhost:4003/auth/login", "protocol": "http", "host": ["localhost"], "port": "4003", "path": ["auth", "login"] },
         "body": { "mode": "raw", "raw": "{\n  \"email\": \"alice@example.com\",\n  \"mot_passe\": \"pass123\"\n}" }
       }
     },
@@ -111,7 +111,7 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": { "raw": "http://localhost:4002/auth/login", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "login"] },
+        "url": { "raw": "http://localhost:4003/auth/login", "protocol": "http", "host": ["localhost"], "port": "4003", "path": ["auth", "login"] },
         "body": { "mode": "raw", "raw": "{\n  \"email\": \"bob@example.com\",\n  \"mot_passe\": \"pass123\"\n}" }
       }
     },
@@ -133,7 +133,7 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
-        "url": { "raw": "http://localhost:4002/auth/login", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "login"] },
+        "url": { "raw": "http://localhost:4003/auth/login", "protocol": "http", "host": ["localhost"], "port": "4003", "path": ["auth", "login"] },
         "body": { "mode": "raw", "raw": "{\n  \"email\": \"charlie@example.com\",\n  \"mot_passe\": \"pass123\"\n}" }
       }
     },
@@ -182,7 +182,7 @@
           { "key": "Content-Type", "value": "application/json" },
           { "key": "Authorization", "value": "Bearer {{token_gest}}" }
         ],
-        "url": { "raw": "http://localhost:3003/deliveries/{{delivery_id}}/assign", "protocol": "http", "host": ["localhost"], "port": "3003", "path": ["deliveries", "{{delivery_id}}", "assign"] },
+        "url": { "raw": "http://localhost:3005/deliveries/{{delivery_id}}/assign", "protocol": "http", "host": ["localhost"], "port": "3005", "path": ["deliveries", "{{delivery_id}}", "assign"] },
         "body": { "mode": "raw", "raw": "{\n  \"livreurId\": \"{{livreur_id}}\"\n}" }
       }
     },
@@ -207,7 +207,7 @@
           { "key": "Content-Type", "value": "application/json" },
           { "key": "Authorization", "value": "Bearer {{token_livreur}}" }
         ],
-        "url": { "raw": "http://localhost:3003/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3003", "path": ["deliveries", "{{delivery_id}}", "status"] },
+        "url": { "raw": "http://localhost:3005/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3005", "path": ["deliveries", "{{delivery_id}}", "status"] },
         "body": { "mode": "raw", "raw": "{\n  \"status\": \"pris_en_charge\",\n  \"commentaire\": \"Colis récupéré\"\n}" }
       }
     },
@@ -231,7 +231,7 @@
           { "key": "Content-Type", "value": "application/json" },
           { "key": "Authorization", "value": "Bearer {{token_livreur}}" }
         ],
-        "url": { "raw": "http://localhost:3003/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3003", "path": ["deliveries", "{{delivery_id}}", "status"] },
+        "url": { "raw": "http://localhost:3005/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3005", "path": ["deliveries", "{{delivery_id}}", "status"] },
         "body": { "mode": "raw", "raw": "{\n  \"status\": \"en_route\",\n  \"commentaire\": \"En cours de livraison\"\n}" }
       }
     },
@@ -255,7 +255,7 @@
           { "key": "Content-Type", "value": "application/json" },
           { "key": "Authorization", "value": "Bearer {{token_livreur}}" }
         ],
-        "url": { "raw": "http://localhost:3003/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3003", "path": ["deliveries", "{{delivery_id}}", "status"] },
+        "url": { "raw": "http://localhost:3005/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3005", "path": ["deliveries", "{{delivery_id}}", "status"] },
         "body": { "mode": "raw", "raw": "{\n  \"status\": \"livré\",\n  \"commentaire\": \"Livraison effectuée\"\n}" }
       }
     },
