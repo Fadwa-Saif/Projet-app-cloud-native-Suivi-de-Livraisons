@@ -1,0 +1,310 @@
+{
+  "info": {
+    "_postman_id": "0f3a9b77-6f6b-4a2f-b9bf-7f5c9e3b5d21",
+    "name": "DeliTrack",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Register client",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Client created', function () { const json = pm.response.json(); pm.expect(json).to.have.property('email', 'alice@example.com'); });",
+              "pm.collectionVariables.set('client_id', pm.response.json()._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:4002/auth/register", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "register"] },
+        "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"role\": \"client\",\n  \"mot_passe\": \"pass123\"\n}" }
+      }
+    },
+    {
+      "name": "2. Register gestionnaire",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Gestionnaire created', function () { const json = pm.response.json(); pm.expect(json).to.have.property('role', 'gestionnaire'); });",
+              "pm.collectionVariables.set('gest_id', pm.response.json()._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:4002/auth/register", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "register"] },
+        "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Bob\",\n  \"email\": \"bob@example.com\",\n  \"role\": \"gestionnaire\",\n  \"mot_passe\": \"pass123\"\n}" }
+      }
+    },
+    {
+      "name": "3. Register livreur",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Livreur created', function () { const json = pm.response.json(); pm.expect(json).to.have.property('role', 'livreur'); });",
+              "pm.collectionVariables.set('livreur_id', pm.response.json()._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:4002/auth/register", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "register"] },
+        "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Charlie\",\n  \"email\": \"charlie@example.com\",\n  \"role\": \"livreur\",\n  \"mot_passe\": \"pass123\"\n}" }
+      }
+    },
+    {
+      "name": "4. Login client",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Token present', function () { const json = pm.response.json(); pm.expect(json).to.have.property('token'); });",
+              "pm.collectionVariables.set('token_client', pm.response.json().token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:4002/auth/login", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "login"] },
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"alice@example.com\",\n  \"mot_passe\": \"pass123\"\n}" }
+      }
+    },
+    {
+      "name": "5. Login gestionnaire",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Token present', function () { const json = pm.response.json(); pm.expect(json).to.have.property('token'); });",
+              "pm.collectionVariables.set('token_gest', pm.response.json().token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:4002/auth/login", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "login"] },
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"bob@example.com\",\n  \"mot_passe\": \"pass123\"\n}" }
+      }
+    },
+    {
+      "name": "6. Login livreur",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Token present', function () { const json = pm.response.json(); pm.expect(json).to.have.property('token'); });",
+              "pm.collectionVariables.set('token_livreur', pm.response.json().token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "http://localhost:4002/auth/login", "protocol": "http", "host": ["localhost"], "port": "4002", "path": ["auth", "login"] },
+        "body": { "mode": "raw", "raw": "{\n  \"email\": \"charlie@example.com\",\n  \"mot_passe\": \"pass123\"\n}" }
+      }
+    },
+    {
+      "name": "7. Créer livraison",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Delivery id present', function () { const json = pm.response.json(); pm.expect(json).to.have.property('_id'); });",
+              "pm.collectionVariables.set('delivery_id', pm.response.json()._id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token_client}}" }
+        ],
+        "url": { "raw": "http://localhost:3002/clients/deliveries", "protocol": "http", "host": ["localhost"], "port": "3002", "path": ["clients", "deliveries"] },
+        "body": { "mode": "raw", "raw": "{\n  \"pickup\": { \"address\": \"12 rue A\" },\n  \"dropoff\": { \"address\": \"45 avenue B\" }\n}" }
+      }
+    },
+    {
+      "name": "8. Assigner livraison",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('AssignedTo present', function () { const json = pm.response.json(); pm.expect(json).to.have.property('assignedTo'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token_gest}}" }
+        ],
+        "url": { "raw": "http://localhost:3003/deliveries/{{delivery_id}}/assign", "protocol": "http", "host": ["localhost"], "port": "3003", "path": ["deliveries", "{{delivery_id}}", "assign"] },
+        "body": { "mode": "raw", "raw": "{\n  \"livreurId\": \"{{livreur_id}}\"\n}" }
+      }
+    },
+    {
+      "name": "9. Changer statut pris_en_charge",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Status updated', function () { const json = pm.response.json(); pm.expect(json).to.have.property('status', 'pris_en_charge'); });",
+              "pm.test('Historique exists', function () { const json = pm.response.json(); pm.expect(json).to.have.property('historique'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token_livreur}}" }
+        ],
+        "url": { "raw": "http://localhost:3003/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3003", "path": ["deliveries", "{{delivery_id}}", "status"] },
+        "body": { "mode": "raw", "raw": "{\n  \"status\": \"pris_en_charge\",\n  \"commentaire\": \"Colis récupéré\"\n}" }
+      }
+    },
+    {
+      "name": "10. Changer statut en_route",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Status updated', function () { const json = pm.response.json(); pm.expect(json).to.have.property('status', 'en_route'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token_livreur}}" }
+        ],
+        "url": { "raw": "http://localhost:3003/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3003", "path": ["deliveries", "{{delivery_id}}", "status"] },
+        "body": { "mode": "raw", "raw": "{\n  \"status\": \"en_route\",\n  \"commentaire\": \"En cours de livraison\"\n}" }
+      }
+    },
+    {
+      "name": "11. Changer statut livré",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Status updated', function () { const json = pm.response.json(); pm.expect(json).to.have.property('status', 'livré'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token_livreur}}" }
+        ],
+        "url": { "raw": "http://localhost:3003/deliveries/{{delivery_id}}/status", "protocol": "http", "host": ["localhost"], "port": "3003", "path": ["deliveries", "{{delivery_id}}", "status"] },
+        "body": { "mode": "raw", "raw": "{\n  \"status\": \"livré\",\n  \"commentaire\": \"Livraison effectuée\"\n}" }
+      }
+    },
+    {
+      "name": "12. Suivre livraison",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Has historique', function () { const json = pm.response.json(); pm.expect(json).to.have.property('historique'); pm.expect(json.historique.length).to.be.greaterThan(0); });",
+              "pm.test('Has delivery id', function () { const json = pm.response.json(); pm.expect(json).to.have.property('_id', pm.collectionVariables.get('delivery_id')); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token_client}}" }],
+        "url": { "raw": "http://localhost:3002/clients/deliveries/{{delivery_id}}", "protocol": "http", "host": ["localhost"], "port": "3002", "path": ["clients", "deliveries", "{{delivery_id}}"] }
+      }
+    },
+    {
+      "name": "13. Historique livraisons du client",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Array returned', function () { const json = pm.response.json(); pm.expect(json).to.be.an('array'); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token_client}}" }],
+        "url": { "raw": "http://localhost:3002/clients/deliveries/moi", "protocol": "http", "host": ["localhost"], "port": "3002", "path": ["clients", "deliveries", "moi"] }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "token_client", "value": "" },
+    { "key": "token_gest", "value": "" },
+    { "key": "token_livreur", "value": "" },
+    { "key": "delivery_id", "value": "" }
+  ]
+}

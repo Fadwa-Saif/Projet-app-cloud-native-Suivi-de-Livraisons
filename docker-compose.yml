@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: dt_mongo
+    ports: ["27017:27017"]
+    volumes:
+      - mongo-data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: dt_rabbitmq
+    ports: ["5672:5672", "15672:15672"]
+
+  auth-service:
+    build: ./auth-service
+    ports: ["4003:4002"]
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/auth-service
+      - JWT_SECRET=secret
+    depends_on: [ mongo ]
+
+  livraison-service:
+    build: ./livraison-service
+    ports: ["3003:3003"]
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/livraison-service
+      - AMQP_URL=amqp://rabbitmq
+      - JWT_SECRET=secret
+    depends_on: [ mongo, rabbitmq ]
+
+  client-service:
+    build: ./client-service
+    ports: ["3002:3002"]
+    environment:
+      - LIVRAISON_URL=http://livraison-service:3003
+      - JWT_SECRET=secret
+    depends_on: [ livraison-service ]
+
+  notification-service:
+    build: ./notification-service
+    ports: ["3004:3004"]
+    environment:
+      - AMQP_URL=amqp://rabbitmq
+    depends_on: [ rabbitmq ]
+
+volumes:
+  mongo-data:
